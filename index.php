@@ -24,7 +24,7 @@
                 <select name="username_input" id="username_input">
                     <option value=""></option>
                     <?php
-                    $query = mysqli_query($mysqli, 'SELECT * FROM users');
+                    $query = mysqli_query($mysql_conn, 'SELECT * FROM users');
                     while ($array = mysqli_fetch_array($query))
                         echo "<option value=\"" . $array[1] . "\">" . $array[1] . "</option>";
                     ?>
@@ -40,13 +40,14 @@
         <h3>Users, whom created their list</h3>
         <?php
         $result = "";
-        foreach (new DirectoryIterator('lists') as $fileInfo) {
-            if ($fileInfo->isDot()) continue;
-            $json_content = file_get_contents($fileInfo->getPathname());
-            $array = json_decode($json_content, true);
-            $result .= $array["owner"] . ", ";
+        $query = mysqli_query($mysql_conn, 'SELECT users.username FROM lists INNER JOIN users ON lists.owner_id = users.id');
+        if (mysqli_num_rows($query) == 0) {
+            print "No users yet.";
+        } else {
+            while ($array = mysqli_fetch_array($query))
+                $result .= $array[0] . ", ";
         }
-        echo substr($result, 0, -2);
+        print substr($result, 0, -2);
         ?>
     </div>
 

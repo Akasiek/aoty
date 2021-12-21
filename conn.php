@@ -9,6 +9,6 @@ $password = '';
 // Name of the database in which .sql file from this repo was imported.
 $database = '';
 
-$mysqli = mysqli_connect($hostname, $username, $password, $database);
+$mysql_conn = mysqli_connect($hostname, $username, $password, $database);
 if ($mysqli_connect_error())
     die('Connect Error');

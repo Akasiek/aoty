@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2021 at 11:08 PM
+-- Generation Time: Dec 21, 2021 at 08:56 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -80,6 +80,39 @@ INSERT INTO `artists` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lists`
+--
+
+CREATE TABLE `lists` (
+  `id` int(11) NOT NULL,
+  `owner_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `lists`
+--
+
+INSERT INTO `lists` (`id`, `owner_id`) VALUES
+(1, 6),
+(3, 7),
+(2, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ratings`
+--
+
+CREATE TABLE `ratings` (
+  `id` int(11) NOT NULL,
+  `albums_position` int(11) NOT NULL,
+  `album_id` int(11) NOT NULL,
+  `list_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -116,6 +149,21 @@ ALTER TABLE `artists`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `lists`
+--
+ALTER TABLE `lists`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lists_owner_id` (`owner_id`);
+
+--
+-- Indexes for table `ratings`
+--
+ALTER TABLE `ratings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ratings_list_id` (`list_id`),
+  ADD KEY `ratings_album_id` (`album_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -139,6 +187,18 @@ ALTER TABLE `artists`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `lists`
+--
+ALTER TABLE `lists`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `ratings`
+--
+ALTER TABLE `ratings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -153,6 +213,19 @@ ALTER TABLE `users`
 --
 ALTER TABLE `albums`
   ADD CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`id`);
+
+--
+-- Constraints for table `lists`
+--
+ALTER TABLE `lists`
+  ADD CONSTRAINT `lists_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `ratings`
+--
+ALTER TABLE `ratings`
+  ADD CONSTRAINT `ratings_album_id` FOREIGN KEY (`album_id`) REFERENCES `albums` (`id`),
+  ADD CONSTRAINT `ratings_list_id` FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

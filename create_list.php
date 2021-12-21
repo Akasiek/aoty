@@ -11,14 +11,19 @@
 <body>
 
     <?php
-    $file_path = 'lists/list_' . $_POST["username_input"] . '.json';
-    // If json file for this user doesn't exist, create it.
-    if (!file_exists($file_path)) {
-        $json_content = ["owner" => $_POST["username_input"]];
-        $json_content = json_encode($json_content);
-        $json_file = fopen($file_path, 'x');
-        fwrite($json_file, $json_content);
-        fclose($json_file);
+    require 'conn1.php';
+    // Check if list exist in lists table
+    if (mysqli_num_rows(mysqli_query(
+        $mysql_conn,
+        'SELECT * FROM lists
+        INNER JOIN users ON lists.owner_id = users.id
+        WHERE users.username LIKE "' . $_POST['username_input'] . '"'
+    )) == 0) {
+        $owner_id = mysqli_fetch_array(mysqli_query($mysql_conn, 'SELECT id FROM users WHERE username LIKE "' . $_POST['username_input'] . '"'));
+        if (mysqli_query($mysql_conn, 'INSERT INTO lists (owner_id) VALUES (' . $owner_id[0] . ')'))
+            echo "New record created successfully";
+        else
+            echo "Error: " . mysqli_error($mysql_conn);
     }
     ?>
 
