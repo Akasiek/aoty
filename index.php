@@ -12,7 +12,7 @@
     <?php
     // MySQL Database connection
     // Change conn.php file and provide it with values corresponding with your database credentials.
-    require 'conn1.php';
+    require 'conn.php';
     ?>
 
     <h1>Album of the year. Choose yours!</h1>
@@ -25,8 +25,8 @@
                     <option value=""></option>
                     <?php
                     $query = mysqli_query($mysql_conn, 'SELECT * FROM users');
-                    while ($array = mysqli_fetch_array($query))
-                        echo "<option value=\"" . $array[1] . "\">" . $array[1] . "</option>";
+                    while ($row = mysqli_fetch_array($query))
+                        echo "<option value=\"" . $row[1] . "\">" . $row[1] . "</option>";
                     ?>
                 </select>
             </p>
@@ -44,8 +44,8 @@
         if (mysqli_num_rows($query) == 0) {
             print "No users yet.";
         } else {
-            while ($array = mysqli_fetch_array($query))
-                $result .= $array[0] . ", ";
+            while ($row = mysqli_fetch_array($query))
+                $result .= $row[0] . ", ";
         }
         print substr($result, 0, -2);
         ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2021 at 08:56 AM
+-- Generation Time: Dec 22, 2021 at 09:06 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -31,24 +31,25 @@ CREATE TABLE `albums` (
   `id` int(11) NOT NULL,
   `title` varchar(30) DEFAULT NULL,
   `release_year` int(2) DEFAULT NULL,
-  `artist_id` int(11) DEFAULT NULL
+  `artist_id` int(11) DEFAULT NULL,
+  `coverart_url` varchar(2083) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `albums`
 --
 
-INSERT INTO `albums` (`id`, `title`, `release_year`, `artist_id`) VALUES
-(1, 'For the first time', 2021, 1),
-(2, 'Cavalcade', 2021, 7),
-(3, 'G_d\'s Pee AT STATE\'S END!', 2021, 9),
-(4, 'Fortitude', 2021, 8),
-(5, 'Scaled And Icy', 2021, 10),
-(6, 'GLOW ON', 2021, 4),
-(7, 'Aphelion', 2021, 3),
-(8, 'In the Court of the Dragon', 2021, 5),
-(9, '9', 2021, 6),
-(10, 'CARNAGE', 2021, 2);
+INSERT INTO `albums` (`id`, `title`, `release_year`, `artist_id`, `coverart_url`) VALUES
+(1, 'For the first time', 2021, 1, 'https://upload.wikimedia.org/wikipedia/en/9/9b/Black_Country_New_Road-_For_the_First_Time_%28Album_Cover%29.jpg'),
+(2, 'Cavalcade', 2021, 7, 'https://upload.wikimedia.org/wikipedia/en/d/da/Black_Midi_-_Cavalcade_cover_art.png'),
+(3, 'G_d\'s Pee AT STATE\'S END!', 2021, 9, 'https://upload.wikimedia.org/wikipedia/en/8/8d/G_dsPeeAtStatesEnd.jpeg'),
+(4, 'Fortitude', 2021, 8, 'https://upload.wikimedia.org/wikipedia/en/0/0b/Gojira_Fortitude_artwork.png'),
+(5, 'Scaled And Icy', 2021, 10, 'https://upload.wikimedia.org/wikipedia/en/5/52/Twenty_One_Pilots_-_Scaled_and_Icy.png'),
+(6, 'GLOW ON', 2021, 4, 'https://upload.wikimedia.org/wikipedia/en/b/b5/Glow_On_%28Turnstile%29.png'),
+(7, 'Aphelion', 2021, 3, 'https://upload.wikimedia.org/wikipedia/en/0/05/Leprous_aphelion.jpg'),
+(8, 'In the Court of the Dragon', 2021, 5, 'https://upload.wikimedia.org/wikipedia/en/f/ff/TriviumIntheCourtoftheDragon.jpg'),
+(9, '9', 2021, 6, 'https://upload.wikimedia.org/wikipedia/en/a/ac/Album_9_by_Pond.png'),
+(10, 'CARNAGE', 2021, 2, 'https://upload.wikimedia.org/wikipedia/en/7/72/Carnage_%28Nick_Cave_and_Warren_Ellis%29.png');
 
 -- --------------------------------------------------------
 
