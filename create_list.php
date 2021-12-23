@@ -13,6 +13,10 @@
             padding: 0;
         }
 
+        button {
+            font-size: 1.125rem;
+        }
+
         header {
             margin: 20px;
         }
@@ -53,6 +57,7 @@
     </style>
 
     <script>
+        // Function for sending XMLHttp Request to PHP file. Searching without reloading page
         function loadData() {
             let xmlhttp = new XMLHttpRequest();
             let searchInputDOM = document.getElementById("search_input");
@@ -86,6 +91,9 @@
     <main>
         <div class="left">
             <h2>List Order</h2>
+
+            <p><button>Save list</button></p>
+
             <?php
             // // Connection file
             // require 'conn.php';
@@ -144,9 +152,7 @@
         let list = [];
 
         function addToList(id, album, artist, cover) {
-            // Create reference to checkbox from search result table
-            const albumCheckbox = document.getElementById("album_" + id);
-
+            const albumCheckbox = document.getElementById("album_" + id); // Create reference to checkbox from search result table
 
             if (albumCheckbox.checked) { // If checkbox checked add corresponding album object to the list array
                 list.push({
@@ -156,43 +162,52 @@
                     coverartUrl: cover
                 });
             }
-            if (albumCheckbox.checked == false) { // Else push album object from the list array
+            if (albumCheckbox.checked == false) { // If checkbox unchecked push album object from the list array
                 list.forEach(function(obj, i) {
                     if (obj["id"] == id)
                         list.splice(i, 1);
                 });
             }
-
-            renderList(list);
+            renderList();
         }
 
-        function renderList(list) {
-            // Reset list results
-            listTbodyDOM.innerHTML = "";
+        function renderList() {
+            listTbodyDOM.innerHTML = ""; // Reset list results
 
-            // For each added album create row with position, album name, etc.
-            list.forEach(function(obj, i) {
+            list.forEach(function(obj, i) { // For each added album create row with position, album name, etc.
                 let newRow = listTbodyDOM.insertRow();
                 let positionCell = newRow.insertCell();
                 let artistNameCell = newRow.insertCell();
                 let albumNameCell = newRow.insertCell();
                 let coverartUrlCell = newRow.insertCell();
 
-                positionCell.innerHTML = i + 1;
+                positionCell.innerHTML = (i + 1) + ". <button onclick='moveAlbumUp(" + i + ")'>▲</button><button onclick='moveAlbumDown(" + i + ")'>▼</button></div></div>";
                 artistNameCell.innerHTML = obj["artistName"];
                 albumNameCell.innerHTML = obj["albumName"];
                 coverartUrlCell.innerHTML = "<img src='" + obj["coverartUrl"] + "'>";
-                // let albumMarkup = `
-                //     <tr>
-                //         <td>${i+1}<td>
-                //         <td>${obj["artistName"]}<td>
-                //         <td>${obj["albumName"]}<td>
-                //         <td><img src="${obj["coverartUrl"]}"><td>
-                //     </tr>
-                // `;
-                // console.log(albumMarkup);
-                // listTbodyDOM.innerHTML += albumMarkup;
             });
+        }
+
+        function moveAlbumUp(i) {
+            if (i == 0)
+                alert("Album is already on the top");
+            else {
+                let x = list[i];
+                list[i] = list[i - 1];
+                list[i - 1] = x;
+                renderList();
+            }
+        }
+
+        function moveAlbumDown(i) {
+            if (i == list.length - 1)
+                alert("Album is already on the bottom");
+            else {
+                let x = list[i];
+                list[i] = list[i + 1];
+                list[i + 1] = x;
+                renderList();
+            }
         }
     </script>
 
