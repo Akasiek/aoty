@@ -13,9 +13,6 @@
             padding: 0;
         }
 
-        button {
-            font-size: 1.125rem;
-        }
 
         header {
             margin: 20px;
@@ -56,27 +53,7 @@
         }
     </style>
 
-    <script>
-        // Function for sending XMLHttp Request to PHP file. Searching without reloading page
-        function loadData() {
-            let xmlhttp = new XMLHttpRequest();
-            let searchInputDOM = document.getElementById("search_input");
-            let searchInput = "";
-
-            if (searchInputDOM) {
-                searchInput = searchInputDOM.value;
-            }
-
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("search_result").innerHTML = this.responseText;
-                }
-            };
-            xmlhttp.open("GET", "search.php?search_input=" + searchInput, true);
-            xmlhttp.send();
-        }
-        loadData();
-    </script>
+    <script src="search_db.js"></script>
 
 </head>
 
@@ -92,7 +69,11 @@
         <div class="left">
             <h2>List Order</h2>
 
-            <p><button>Save list</button></p>
+            <form action="save_list.php" method="POST">
+                <p><button onclick="saveListToDB()">Save list</button></p>
+                <input type="hidden" id="json_data" name="json_data">
+                <input type="hidden" name="username_input" value="<?php echo $_POST['username_input']; ?>">
+            </form>
 
             <?php
             // // Connection file
@@ -135,7 +116,7 @@
 
             <form>
                 <p>
-                    <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onkeydown="loadData()">
+                    <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onkeyup="searchDB()">
                 </p>
             </form>
 
@@ -147,69 +128,7 @@
     </main>
 
 
-    <script>
-        const listTbodyDOM = document.getElementById("list_tbody");
-        let list = [];
-
-        function addToList(id, album, artist, cover) {
-            const albumCheckbox = document.getElementById("album_" + id); // Create reference to checkbox from search result table
-
-            if (albumCheckbox.checked) { // If checkbox checked add corresponding album object to the list array
-                list.push({
-                    id: id,
-                    albumName: album,
-                    artistName: artist,
-                    coverartUrl: cover
-                });
-            }
-            if (albumCheckbox.checked == false) { // If checkbox unchecked push album object from the list array
-                list.forEach(function(obj, i) {
-                    if (obj["id"] == id)
-                        list.splice(i, 1);
-                });
-            }
-            renderList();
-        }
-
-        function renderList() {
-            listTbodyDOM.innerHTML = ""; // Reset list results
-
-            list.forEach(function(obj, i) { // For each added album create row with position, album name, etc.
-                let newRow = listTbodyDOM.insertRow();
-                let positionCell = newRow.insertCell();
-                let artistNameCell = newRow.insertCell();
-                let albumNameCell = newRow.insertCell();
-                let coverartUrlCell = newRow.insertCell();
-
-                positionCell.innerHTML = (i + 1) + ". <button onclick='moveAlbumUp(" + i + ")'>▲</button><button onclick='moveAlbumDown(" + i + ")'>▼</button></div></div>";
-                artistNameCell.innerHTML = obj["artistName"];
-                albumNameCell.innerHTML = obj["albumName"];
-                coverartUrlCell.innerHTML = "<img src='" + obj["coverartUrl"] + "'>";
-            });
-        }
-
-        function moveAlbumUp(i) {
-            if (i == 0)
-                alert("Album is already on the top");
-            else {
-                let x = list[i];
-                list[i] = list[i - 1];
-                list[i - 1] = x;
-                renderList();
-            }
-        }
-
-        function moveAlbumDown(i) {
-            if (i == list.length - 1)
-                alert("Album is already on the bottom");
-            else {
-                let x = list[i];
-                list[i] = list[i + 1];
-                list[i + 1] = x;
-                renderList();
-            }
-        }
-    </script>
+    <script src="list_creation.js"></script>
 
 </body>
 
