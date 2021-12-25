@@ -8,7 +8,7 @@ WHERE title LIKE "%' . $search_input . '%" OR artists.name LIKE "%' . $search_in
 $result = mysqli_query($mysql_conn, $sql);
 
 echo '<table><tr>
-<th>Id</th><th>Artist</th><th>Title</th><th>Cover Art</th><th>Add to your list</th></tr>';
+<th>Id</th><th>Artist</th><th>Title</th><th>Cover Art</th><th></th></tr>';
 
 while ($row = mysqli_fetch_array($result)) {
     $id = $row["id"];
@@ -20,8 +20,7 @@ while ($row = mysqli_fetch_array($result)) {
     <td>' . $artist . '</td>
     <td>' . $album . '</td>
     <td><img src="' . $cover_url . '"></td>
-    <td><button onclick="addToList(' . $id  . ', \'' . addslashes($album) . '\', \'' . addslashes($artist) . '\', \'' . addslashes($cover_url) . '\')">ADD</button>
-    <button onclick="removeFromList(' . $id  . ')">DELETE</button></td>
+    <td><button class="emoji_button" onclick="addToList(' . $id  . ', \'' . addslashes($album) . '\', \'' . addslashes($artist) . '\', \'' . addslashes($cover_url) . '\')">➕</button></td>
     </tr>';
 }
 

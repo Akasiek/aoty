@@ -12,12 +12,14 @@ function renderList() {
         let artistNameCell = newRow.insertCell();
         let albumNameCell = newRow.insertCell();
         let coverartUrlCell = newRow.insertCell();
+        let deleteButtonCell = newRow.insertCell();
 
         positionCell.innerHTML =
             i + 1 + ". <button onclick='moveAlbumUp(" + i + ")'>▲</button><button onclick='moveAlbumDown(" + i + ")'>▼</button></div></div>";
         artistNameCell.innerHTML = obj["artistName"];
         albumNameCell.innerHTML = obj["albumName"];
         coverartUrlCell.innerHTML = "<img src='" + obj["coverartUrl"] + "'>";
+        deleteButtonCell.innerHTML = "<button class='emoji_button' onclick='removeFromList(" + obj["id"] + ")'>❌</button>";
     });
 }
 

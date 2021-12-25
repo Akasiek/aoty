@@ -13,6 +13,11 @@
             padding: 0;
         }
 
+        .emoji_button {
+            background-color: #fff;
+            border: 2px solid #878787;
+            padding: 2px 2px 3px 2px
+        }
 
         header {
             margin: 20px;
@@ -98,6 +103,7 @@
                         <th>Artist</th>
                         <th>Title</th>
                         <th>Cover Art</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="list_tbody">
