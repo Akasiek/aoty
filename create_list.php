@@ -114,11 +114,9 @@
         <div class="right">
             <h2>Search</h2>
 
-            <form>
-                <p>
-                    <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onkeyup="searchDB()">
-                </p>
-            </form>
+            <p>
+                <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onkeyup="searchDB()">
+            </p>
 
             <div id="search_result"></div>
 

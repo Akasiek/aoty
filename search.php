@@ -20,7 +20,8 @@ while ($row = mysqli_fetch_array($result)) {
     <td>' . $artist . '</td>
     <td>' . $album . '</td>
     <td><img src="' . $cover_url . '"></td>
-    <td style="text-align:center"><input style="height:30px;width:30px;" type="checkbox" id="album_' . $id . '" onclick="addToList(' . $id  . ', \'' . addslashes($album) . '\', \'' . addslashes($artist) . '\', \'' . addslashes($cover_url) . '\')"></td>
+    <td><button onclick="addToList(' . $id  . ', \'' . addslashes($album) . '\', \'' . addslashes($artist) . '\', \'' . addslashes($cover_url) . '\')">ADD</button>
+    <button onclick="removeFromList(' . $id  . ')">DELETE</button></td>
     </tr>';
 }
 
