@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 22, 2021 at 09:06 PM
+-- Generation Time: Dec 26, 2021 at 06:51 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -49,7 +49,22 @@ INSERT INTO `albums` (`id`, `title`, `release_year`, `artist_id`, `coverart_url`
 (7, 'Aphelion', 2021, 3, 'https://upload.wikimedia.org/wikipedia/en/0/05/Leprous_aphelion.jpg'),
 (8, 'In the Court of the Dragon', 2021, 5, 'https://upload.wikimedia.org/wikipedia/en/f/ff/TriviumIntheCourtoftheDragon.jpg'),
 (9, '9', 2021, 6, 'https://upload.wikimedia.org/wikipedia/en/a/ac/Album_9_by_Pond.png'),
-(10, 'CARNAGE', 2021, 2, 'https://upload.wikimedia.org/wikipedia/en/7/72/Carnage_%28Nick_Cave_and_Warren_Ellis%29.png');
+(10, 'CARNAGE', 2021, 2, 'https://upload.wikimedia.org/wikipedia/en/7/72/Carnage_%28Nick_Cave_and_Warren_Ellis%29.png'),
+(21, 'Promises', 2021, 13, 'https://upload.wikimedia.org/wikipedia/en/a/ae/Promises_%28Floating_Points%2C_Pharoah_Sanders_and_the_London_Symphony_Orchestra%29.png'),
+(22, 'SOUR', 2021, 12, 'https://upload.wikimedia.org/wikipedia/en/b/b2/Olivia_Rodrigo_-_SOUR.png'),
+(23, 'Hey What', 2021, 11, 'https://upload.wikimedia.org/wikipedia/en/b/b5/Low_-_Hey_What.png'),
+(24, 'THE FUTURE BITES', 2021, 15, 'https://upload.wikimedia.org/wikipedia/en/2/28/Steven_Wilson_-_The_Future_Bites.png'),
+(25, 'Typhoons', 2021, 14, 'https://upload.wikimedia.org/wikipedia/en/1/1a/Royal_Blood_-_Typhoons.png');
+
+--
+-- Triggers `albums`
+--
+DELIMITER $$
+CREATE TRIGGER `new_leaderboard_insert_when_new_album` AFTER INSERT ON `albums` FOR EACH ROW BEGIN
+	INSERT INTO leaderboard(album_id) VALUES (new.id);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -59,7 +74,7 @@ INSERT INTO `albums` (`id`, `title`, `release_year`, `artist_id`, `coverart_url`
 
 CREATE TABLE `artists` (
   `id` int(11) NOT NULL,
-  `name` varchar(30) DEFAULT NULL
+  `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -76,7 +91,45 @@ INSERT INTO `artists` (`id`, `name`) VALUES
 (7, 'black midi'),
 (8, 'Gojira'),
 (9, 'Godspeed You! Black Emperor'),
-(10, 'Twenty One Pilots');
+(10, 'Twenty One Pilots'),
+(11, 'Low'),
+(12, 'Olivia Rodrigo'),
+(13, 'Floating Points, Pharoah Sanders & The London Symphony Orchestra'),
+(14, 'Royal Blood'),
+(15, 'Steven Wilson');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leaderboard`
+--
+
+CREATE TABLE `leaderboard` (
+  `id` int(11) NOT NULL,
+  `album_id` int(11) NOT NULL,
+  `score` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `leaderboard`
+--
+
+INSERT INTO `leaderboard` (`id`, `album_id`, `score`) VALUES
+(1, 1, 0),
+(2, 2, 0),
+(3, 3, 0),
+(4, 4, 0),
+(5, 5, 0),
+(6, 6, 0),
+(7, 7, 0),
+(8, 8, 0),
+(9, 9, 0),
+(10, 10, 0),
+(11, 21, 0),
+(12, 22, 0),
+(13, 23, 0),
+(14, 24, 0),
+(15, 25, 0);
 
 -- --------------------------------------------------------
 
@@ -89,15 +142,6 @@ CREATE TABLE `lists` (
   `owner_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `lists`
---
-
-INSERT INTO `lists` (`id`, `owner_id`) VALUES
-(1, 6),
-(3, 7),
-(2, 8);
-
 -- --------------------------------------------------------
 
 --
@@ -106,7 +150,7 @@ INSERT INTO `lists` (`id`, `owner_id`) VALUES
 
 CREATE TABLE `ratings` (
   `id` int(11) NOT NULL,
-  `albums_position` int(11) NOT NULL,
+  `album_position` int(11) NOT NULL,
   `album_id` int(11) NOT NULL,
   `list_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -150,6 +194,13 @@ ALTER TABLE `artists`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `leaderboard`
+--
+ALTER TABLE `leaderboard`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `album_id` (`album_id`);
+
+--
 -- Indexes for table `lists`
 --
 ALTER TABLE `lists`
@@ -179,25 +230,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `albums`
 --
 ALTER TABLE `albums`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `artists`
 --
 ALTER TABLE `artists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `leaderboard`
+--
+ALTER TABLE `leaderboard`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `lists`
 --
 ALTER TABLE `lists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -214,6 +271,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `albums`
   ADD CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`id`);
+
+--
+-- Constraints for table `leaderboard`
+--
+ALTER TABLE `leaderboard`
+  ADD CONSTRAINT `leaderboard_album_id` FOREIGN KEY (`album_id`) REFERENCES `albums` (`id`);
 
 --
 -- Constraints for table `lists`

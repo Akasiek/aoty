@@ -7,8 +7,7 @@ INNER JOIN  artists ON albums.artist_id = artists.id
 WHERE title LIKE "%' . $search_input . '%" OR artists.name LIKE "%' . $search_input . '%" LIMIT 10';
 $result = mysqli_query($mysql_conn, $sql);
 
-echo '<table><tr>
-<th>Id</th><th>Artist</th><th>Title</th><th>Cover Art</th><th></th></tr>';
+echo '<table><tr><th>Artist</th><th>Title</th><th>Cover Art</th><th></th></tr>';
 
 while ($row = mysqli_fetch_array($result)) {
     $id = $row["id"];
@@ -16,7 +15,6 @@ while ($row = mysqli_fetch_array($result)) {
     $album = $row["title"];
     $cover_url = $row["coverart_url"];
     echo '<tr>
-    <td>' . $id . '</td>
     <td>' . $artist . '</td>
     <td>' . $album . '</td>
     <td><img src="' . $cover_url . '"></td>

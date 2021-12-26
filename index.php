@@ -8,6 +8,10 @@
     <title>Album of the Year - Startpage</title>
 
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         section.user_choice {
             display: flex;
         }
@@ -15,6 +19,72 @@
         section.user_choice>div {
             flex: 1;
             padding: 10px 20px;
+        }
+
+        section.leaderboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+        hr {
+            margin: 10px 20px;
+        }
+
+        table {
+            border: 1px solid #000;
+        }
+
+
+        table,
+        th,
+        td {
+            outline: 1px solid #000;
+            border-collapse: collapse;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        th:nth-child(-n + 3) {
+            font-size: 2rem;
+        }
+
+        td:nth-child(-n + 2) {
+            font-size: 2.5rem;
+            padding: 0 20px;
+        }
+
+        td:nth-child(3) {
+            display: flex;
+            align-items: center;
+            font-size: 1.75rem;
+            text-align: left;
+            padding: 0;
+        }
+
+        td:nth-child(3)>div:nth-child(2) {
+            padding: 0 35px 0 15px;
+        }
+
+        td:nth-child(3)>div>p {
+            margin: 0;
+        }
+
+
+        td:nth-child(3)>div>p:nth-child(2) {
+            font-size: 1rem;
+            font-style: italic;
+            color: #555;
+        }
+
+        td>div:first-child {
+            height: 200px;
+        }
+
+        td>div>img {
+            width: 200px;
         }
     </style>
 </head>
@@ -69,8 +139,40 @@
     <hr>
 
     <section class="leaderboard">
-        <h1 style="text-align:center;">Leaderboard</h1>
 
+        <?php
+        require 'php/conn.php';
+        // Get Top 10 albums on leaderboard by score
+        $sql = " SELECT leaderboard.score, albums.title, artists.name, albums.coverart_url FROM leaderboard
+        INNER JOIN albums ON leaderboard.album_id = albums.id
+        INNER JOIN artists ON albums.artist_id = artists.id
+        WHERE score != 0
+        ORDER BY score DESC
+        LIMIT 10";
+        $result = mysqli_query($mysql_conn, $sql);
+
+        if (mysqli_num_rows($result) != 0) {
+            // Print results in table
+            $place = 1;
+            echo "<h1>Leaderboard</h1>";
+            echo "<table><tr><th>#</th><th>Score</th><th>Album</th></tr>";
+            while ($row = mysqli_fetch_array($result)) {
+                echo "<tr>";
+                echo "<td>$place</td>";
+                echo "<td>" . $row["score"] . "</td>";
+                echo "<td><div><img src='" . $row["coverart_url"] . "'></div><div><p>" . $row["title"] . "</p><p>" . $row["name"] . "</p></div></td>";
+                echo "</tr>";
+
+                $place++;
+            }
+            echo "</table>";
+        } else {
+            echo "Leaderboard is empty...";
+        }
+
+
+
+        ?>
     </section>
 
 
