@@ -87,7 +87,7 @@
 <body>
 
     <header>
-        <h1>Hi <?php echo $_POST['username_input']; ?>! Choose albums for your list</h1>
+        <h1>Hi <?php echo $_GET['username_input']; ?>! Choose albums for your list</h1>
     </header>
 
     <hr>
@@ -99,10 +99,8 @@
             <form action="php/save_list.php" method="POST">
                 <p><button onclick="saveListToDB()">Save list</button></p>
                 <input type="hidden" id="json_data" name="json_data">
-                <input type="hidden" id="username_input" name="username_input" value="<?php echo $_POST['username_input']; ?>">
+                <input type="hidden" id="username_input" name="username_input" value="<?php echo $_GET['username_input']; ?>">
             </form>
-
-
 
             <table>
                 <thead>
@@ -120,33 +118,18 @@
             </table>
         </div>
 
-
-        </div>
-
         <hr>
 
         <div class="right">
             <h2>Search</h2>
-
             <p>
                 <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onkeyup="searchDB()">
             </p>
-
             <div id="search_result"></div>
-
-            <!-- <input type="checkbox" name="" id="1_For the first timee" onclick="addToList(1, 'For the first timee', 'Black Country, New Road' )"> -->
-
         </div>
     </main>
 
-
-
-
     <script src="js/list_creation.js"></script>
-
-    <script>
-
-    </script>
 
 </body>
 
