@@ -1,8 +1,18 @@
 const listTbodyDOM = document.getElementById("list_tbody");
+
 let list = [];
 
+// Function that gets already present list from database. More info in load_saved_list.php
+async function loadList() {
+    let loadedList = [];
+    let url = "php/load_saved_list.php?username=" + document.getElementById("username_input").value;
+    const result = await fetch(url);
+    loadedList = result.json();
+    return loadedList;
+}
+
 // Render HTML markup of user's list.
-function renderList() {
+async function renderList() {
     listTbodyDOM.innerHTML = ""; // Reset list results
 
     // For each added album create row with position, album name, etc.
@@ -22,6 +32,24 @@ function renderList() {
         deleteButtonCell.innerHTML = "<button class='emoji_button' onclick='removeFromList(" + obj["id"] + ")'>❌</button>";
     });
 }
+
+// On page load wait for database list to load and if exists set it to main list variable
+window.onload = async function () {
+    // Wait for the loading of the list from the database
+    let loadedList = await loadList();
+    // If there is a list in database set it to empty array
+    if (loadedList.length !== 0) {
+        list = loadedList;
+        loadedList = null;
+        renderList();
+    }
+};
+
+renderList();
+
+// ***
+// Auxiliary functions
+// ***
 
 function findAlbumInList(id) {
     return list.some((obj) => obj.id == id);

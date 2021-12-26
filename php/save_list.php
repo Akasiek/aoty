@@ -25,7 +25,7 @@ if (empty($list)) {
         echo "Error: " . $sql . "<br>" . mysqli_error($mysql_conn);
 
     // Redirect to index.php page after deleting data
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -57,7 +57,7 @@ function createList($conn, $list, $user_id)
     }
 
     // Redirect to index.php page after inserting data
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -112,6 +112,6 @@ function updateList($conn, $list, $user_id)
     }
 
     // Redirect to index.php page after inserting data
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }

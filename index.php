@@ -12,7 +12,7 @@
     <?php
     // MySQL Database connection
     // Change conn.php file and provide it with values corresponding with your database credentials.
-    require 'conn.php';
+    require "php/conn.php";
     ?>
 
     <h1>Album of the year. Choose yours!</h1>

@@ -58,7 +58,29 @@
         }
     </style>
 
-    <script src="search_db.js"></script>
+    <script>
+        // Function for sending XMLHttp Request to PHP file. Searching without reloading page
+        function searchDB() {
+            let xmlhttp = new XMLHttpRequest();
+            let searchInputDOM = document.getElementById("search_input");
+            let searchInput = "";
+
+            if (searchInputDOM) {
+                searchInput = searchInputDOM.value;
+            }
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("search_result").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "php/search.php?search_input=" + searchInput, true);
+            xmlhttp.send();
+        }
+        searchDB();
+    </script>
+
+
 
 </head>
 
@@ -74,27 +96,13 @@
         <div class="left">
             <h2>List Order</h2>
 
-            <form action="save_list.php" method="POST">
+            <form action="php/save_list.php" method="POST">
                 <p><button onclick="saveListToDB()">Save list</button></p>
                 <input type="hidden" id="json_data" name="json_data">
-                <input type="hidden" name="username_input" value="<?php echo $_POST['username_input']; ?>">
+                <input type="hidden" id="username_input" name="username_input" value="<?php echo $_POST['username_input']; ?>">
             </form>
 
-            <?php
-            // // Connection file
-            // require 'conn.php';
-            // // Check if list exist in lists table
-            // if (mysqli_num_rows(mysqli_query(
-            //     $mysql_conn,
-            //     'SELECT * FROM lists
-            // INNER JOIN users ON lists.owner_id = users.id
-            // WHERE users.username LIKE "' . $_POST['username_input'] . '"'
-            // )) == 0) {
-            //     $owner_id = mysqli_fetch_array(mysqli_query($mysql_conn, 'SELECT id FROM users WHERE username LIKE "' . $_POST['username_input'] . '"'));
-            //     if (!mysqli_query($mysql_conn, 'INSERT INTO lists (owner_id) VALUES (' . $owner_id[0] . ')'))
-            //         echo "Error: " . mysqli_error($mysql_conn);
-            // }
-            ?>
+
 
             <table>
                 <thead>
@@ -132,7 +140,13 @@
     </main>
 
 
-    <script src="list_creation.js"></script>
+
+
+    <script src="js/list_creation.js"></script>
+
+    <script>
+
+    </script>
 
 </body>
 
