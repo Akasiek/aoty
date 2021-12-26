@@ -6,8 +6,8 @@ let list = [];
 async function loadList() {
     let loadedList = [];
     let url = "php/load_saved_list.php?username=" + document.getElementById("username_input").value;
-    const result = await fetch(url);
-    loadedList = result.json();
+    const res = await fetch(url);
+    loadedList = res.json();
     return loadedList;
 }
 

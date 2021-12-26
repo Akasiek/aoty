@@ -60,22 +60,26 @@
 
     <script>
         // Function for sending XMLHttp Request to PHP file. Searching without reloading page
-        function searchDB() {
-            let xmlhttp = new XMLHttpRequest();
+        async function searchDB() {
+            // Get DOM of input where user types search criteria 
             let searchInputDOM = document.getElementById("search_input");
+            // If searchInputDOM is set, set searchInput variable to its value
+            // Helps to display search results on window load
             let searchInput = "";
-
             if (searchInputDOM) {
                 searchInput = searchInputDOM.value;
             }
 
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("search_result").innerHTML = this.responseText;
-                }
-            };
-            xmlhttp.open("GET", "php/search.php?search_input=" + searchInput, true);
-            xmlhttp.send();
+            // Send request to search.php file for search result with searchInput variable as search criteria
+            async function getDataFromDB(searchInput) {
+                let res = await fetch("php/search.php?search_input=" + searchInput);
+                return res.text();
+            }
+
+            // Unwrap async function return
+            let result = await getDataFromDB(searchInput)
+            // Use result variable as HTML markup of search_result element
+            document.getElementById("search_result").innerHTML = result;
         }
         searchDB();
     </script>
@@ -123,7 +127,7 @@
         <div class="right">
             <h2>Search</h2>
             <p>
-                <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onkeyup="searchDB()">
+                <input type="search" name="search_input" id="search_input" placeholder="Search for a album" onsearch="searchDB()" onkeyup="searchDB()">
             </p>
             <div id="search_result"></div>
         </div>
